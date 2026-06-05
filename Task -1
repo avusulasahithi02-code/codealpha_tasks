@@ -1,0 +1,54 @@
+#include<iostream>
+#include<string>
+using namespace std;
+int main()
+{
+    int n;
+    string grade;
+    int credits;
+    int gradePoints;
+    int totalCredits=0;
+    int totalGradePoints=0;
+    float cgpa;
+    cout<<"Enter number of courses: ";
+    cin>>n;
+    for(int i=1; i<=n; i++)
+    {
+        cout<<"\nCourse "<<i<<endl;
+        cout<<"Enter grade: ";
+        cin>>grade;
+        cout<<"Enter credits: ";
+        cin>>credits;
+        if(grade=="O")
+        {
+            gradePoints=10;
+        }
+        else if(grade=="A")
+        {
+            gradePoints=9;
+        }
+        else if(grade=="B")
+        {
+            gradePoints=8;
+        }
+        else if(grade=="C")
+        {
+            gradePoints=7;
+        }
+        else if(grade=="D")
+        {
+            gradePoints=6;
+        }
+        else
+        {
+            gradePoints=0;
+        }
+
+        totalCredits += credits;
+        totalGradePoints += gradePoints * credits;
+    }
+    cgpa = (float)totalGradePoints / totalCredits;
+    cout<<"\nTotal Credits: "<<totalCredits<<endl;
+    cout<<"CGPA: "<<cgpa;
+    return 0;
+}
