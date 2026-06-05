@@ -1,0 +1,88 @@
+#include<iostream>
+#include<string>
+#include<fstream>
+using namespace std;
+void registerUser()
+{
+    string username,password;
+    string storedUser,storedPass;
+    cout<<"Enter Username: ";
+    cin>>username;
+    cout<<"Enter Password: ";
+    cin>>password;
+    ifstream readFile("users.txt");
+    while(readFile>>storedUser>>storedPass)
+    {
+        if(username == storedUser)
+        {
+            cout<<"Username already exixts"<<endl;
+            readFile.close();
+            return;
+        }
+    }
+    readFile.close();
+    ofstream writeFile("users.txt",ios::app);
+    writeFile<<username<<password<<endl;
+    writeFile.close();
+    cout<<"Registration Successful"<<endl;
+}
+void loginUser()
+{
+    string username,password;
+    string storedUser,storedPass;
+    bool found = false;
+    cout<<"Enter Username: ";
+    cin>>username;
+    cout<<"Enter Password: ";
+    cin>>password;
+    ifstream file("users.txt");
+    while(file>>storedUser>>storedPass)
+    {
+        if(username==storedUser && password == storedPass)
+        {
+            found = true;
+            break;
+        }
+    }
+    file.close();
+    if(found)
+    {
+        cout<<"Login Successful"<<endl;
+    }
+    else
+    {
+        cout<<"Invalid Username or Password"<<endl;
+    }
+}
+int main()
+{
+    int choice;
+    do
+    {
+        cout<<"\n1.Register";
+        cout<<"\n2.Login";
+        cout<<"\n3.Exit";
+
+        cout<<"\nEnter choice: ";
+        cin>>choice;
+
+        switch(choice)
+        {
+            case 1:
+                registerUser();
+                break;
+
+            case 2:
+                loginUser();
+                break;
+
+            case 3:
+                cout<<"Thank You";
+                break;
+
+            default:
+                cout<<"Invalid Choice";
+        }
+    }while(choice!=3);
+    return 0;
+}
