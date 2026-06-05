@@ -1,0 +1,141 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class Transaction
+{
+public:
+    string type;
+    double amount;
+
+    Transaction(string t, double a)
+    {
+        type = t;
+        amount = a;
+    }
+};
+
+class Account
+{
+private:
+    int accountNumber;
+    double balance;
+    vector<Transaction> transactions;
+
+public:
+    Account(int accNo, double bal = 0)
+    {
+        accountNumber = accNo;
+        balance = bal;
+    }
+
+    void deposit(double amount)
+    {
+        balance += amount;
+        transactions.push_back(Transaction("Deposit", amount));
+        cout << "Amount Deposited Successfully\n";
+    }
+
+    void withdraw(double amount)
+    {
+        if(amount <= balance)
+        {
+            balance -= amount;
+            transactions.push_back(Transaction("Withdrawal", amount));
+            cout << "Amount Withdrawn Successfully\n";
+        }
+        else
+        {
+            cout << "Insufficient Balance\n";
+        }
+    }
+
+    void transfer(Account &receiver, double amount)
+    {
+        if(amount <= balance)
+        {
+            balance -= amount;
+            receiver.balance += amount;
+
+            transactions.push_back(Transaction("Transfer Sent", amount));
+            receiver.transactions.push_back(Transaction("Transfer Received", amount));
+
+            cout << "Fund Transfer Successful\n";
+        }
+        else
+        {
+            cout << "Insufficient Balance\n";
+        }
+    }
+
+    void displayBalance()
+    {
+        cout << "Account Number : " << accountNumber << endl;
+        cout << "Current Balance : " << balance << endl;
+    }
+
+    void showTransactions()
+    {
+        cout << "\nTransaction History\n";
+        for(int i = 0; i < transactions.size(); i++)
+        {
+            cout << transactions[i].type
+                 << " : Rs." << transactions[i].amount << endl;
+        }
+    }
+
+    int getAccountNumber()
+    {
+        return accountNumber;
+    }
+};
+
+class Customer
+{
+private:
+    int customerId;
+    string name;
+    Account account;
+
+public:
+    Customer(int id, string n, int accNo)
+        : account(accNo)
+    {
+        customerId = id;
+        name = n;
+    }
+
+    Account& getAccount()
+    {
+        return account;
+    }
+
+    void displayCustomer()
+    {
+        cout << "\nCustomer ID : " << customerId << endl;
+        cout << "Customer Name : " << name << endl;
+        account.displayBalance();
+    }
+};
+
+int main()
+{
+    Customer c1(101, "Rahul", 5001);
+    Customer c2(102, "Priya", 5002);
+
+    c1.getAccount().deposit(10000);
+    c1.getAccount().withdraw(2000);
+
+    c1.getAccount().transfer(c2.getAccount(), 3000);
+
+    cout << "\nCustomer 1 Details\n";
+    c1.displayCustomer();
+    c1.getAccount().showTransactions();
+
+    cout << "\n\nCustomer 2 Details\n";
+    c2.displayCustomer();
+    c2.getAccount().showTransactions();
+
+    return 0;
+}
